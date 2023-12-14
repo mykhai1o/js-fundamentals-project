@@ -66,6 +66,7 @@ class Task  {
     constructor(task) {
         this._task = task;
     }
+    
     createTask() {
         if (/(\w+)/.test(this._task)) {
             const newTaskDiv = document.createElement("div");
@@ -73,17 +74,19 @@ class Task  {
             newTaskDiv.style.display = "flex";
             taskCreated.prepend(newTaskDiv);
             newTaskDiv.innerHTML = `
-                <div class="task-child__checkboks"><input type="checkbox"></div>
-                <div class="task-child__created-task">${this._task}</div>
-                <div class="task-child__delete-button"><input type="submit" value="x"></div>
+            <div class="task-child__checkboks"><input type="checkbox"></div>
+            <div class="task-child__created-task">${this._task}</div>
+            <div class="task-child__delete-button"><input type="submit" value="x"></div>
             `;
+            const idNumber = (taskCreated.querySelectorAll(".task-child").length);
+            newTaskDiv.setAttribute("id",`task${idNumber}`);
         }
         taskCreatorInput.value = "";
         taskCreatorInput.focus();
     }
-    deleteTask() {
-        this.newTaskDiv.remove();
-    }
+    // deleteTask() {
+    //     this.newTaskDiv.remove();
+    // }
 };
 
 
@@ -94,9 +97,10 @@ taskCreatorInput.addEventListener('keyup', (e) => {
     if (e.key === "Enter") new Task(taskCreatorInput.value).createTask();
 });
 
-taskDeleteButton.addEventListener('click', function() {
-    this.deleteTask();
-});
+// taskDeleteButton.addEventListener('click', function() {
+//     this.deleteTask();
+// });
 
 
-
+test = 1; 
+document.querySelector('h1').setAttribute("id",`task${++test}`);
