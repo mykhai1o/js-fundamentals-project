@@ -24,83 +24,90 @@
 //     }
 // };
 
-// const tasksContainer = document.querySelector('.tasks-wrapper');
-// const taskCreated = document.querySelector('.task-created');
-// const taskCreatorInput = document.querySelector('.task-creator__input');
-// const taskCreatorButton = document.querySelector('.task-creator__button');
+const tasksContainer = document.querySelector('.tasks-wrapper');
+const taskCreated = document.querySelector('.task-created');
+const taskCreatorInput = document.querySelector('.task-creator__input');
+const taskCreatorButton = document.querySelector('.task-creator__button');
+// const taskDeleteButton = document.querySelector('.task-child__delete-button input');
 
-// const createTask = function() {
-//     const emptyRegExp = /^(\s+)/;
-//     if (taskCreatorInput.value !== "" && !emptyRegExp.test(taskCreatorInput.value)) {
-//         const newDiv = document.createElement("div");
-//         newDiv.classList.add("task-child");
-//         newDiv.style.display = "flex";
-//         taskCreated.prepend(newDiv);
-//         newDiv.innerHTML = `
-//             <div class="task-child__checkboks"><input type="checkbox"></div>
-//             <div class="task-child__created-task">${taskCreatorInput.value}</div>
-//         `;
-//     }
-//     taskCreatorInput.value = "";
-//     taskCreatorInput.focus();
-// }
-
-// taskCreatorButton.addEventListener('click', createTask);
-// taskCreatorInput.addEventListener('keyup', (e) => {
-//     if (e.key === "Enter") createTask();
-// });
+const createTask = function() {
+    if (/(\S+)/.test(taskCreatorInput.value)) {
+        const newTaskDiv = document.createElement("div");
+        newTaskDiv.classList.add("task-child");
+        newTaskDiv.style.display = "flex";
+        taskCreated.prepend(newTaskDiv);
+        newTaskDiv.innerHTML = `
+        <div class="task-child__checkboks"><input type="checkbox"></div>
+        <div class="task-child__created-task">${taskCreatorInput.value}</div>
+        <div class="task-child__delete-button"><input type="submit" value="x"></div>
+            `;
+            // const idNumber = (taskCreated.querySelectorAll(".task-child").length);
+            // newTaskDiv.setAttribute("id",`task${idNumber}`);
+        }
+        taskCreatorInput.value = "";
+        taskCreatorInput.focus();
+}
+    
+taskCreatorButton.addEventListener('click', createTask);
+taskCreatorInput.addEventListener('keyup', (e) => {
+    if (e.key === "Enter") createTask();
+});
+taskCreated.addEventListener('click', function(event) {
+    const currentDelBut = event.target.closest('input[type="submit"]');
+    if(!currentDelBut) return;
+    event.target.closest(".task-child").remove();
+    
+});
 
 
 
 
 //_____________________________________________________
 
-const taskCreatorInput = document.querySelector('.task-creator__input');
-const taskCreatorButton = document.querySelector('.task-creator__button');
-const tasksContainer = document.querySelector('.tasks-wrapper');
-const taskCreated = document.querySelector('.task-created');
-const taskDeleteButton = document.querySelector('.task-child__delete-button');
+// const taskCreatorInput = document.querySelector('.task-creator__input');
+// const taskCreatorButton = document.querySelector('.task-creator__button');
+// const tasksContainer = document.querySelector('.tasks-wrapper');
+// const taskCreated = document.querySelector('.task-created');
+// const taskDeleteButton = document.querySelector('.task-child__delete-button');
 
 
-class Task  {
-    constructor(task) {
-        this._task = task;
-    }
+// class Task  {
+//     constructor(task) {
+//         this._task = task;
+//     }
     
-    createTask() {
-        if (/(\w+)/.test(this._task)) {
-            const newTaskDiv = document.createElement("div");
-            newTaskDiv.classList.add("task-child");
-            newTaskDiv.style.display = "flex";
-            taskCreated.prepend(newTaskDiv);
-            newTaskDiv.innerHTML = `
-            <div class="task-child__checkboks"><input type="checkbox"></div>
-            <div class="task-child__created-task">${this._task}</div>
-            <div class="task-child__delete-button"><input type="submit" value="x"></div>
-            `;
-            const idNumber = (taskCreated.querySelectorAll(".task-child").length);
-            newTaskDiv.setAttribute("id",`task${idNumber}`);
-        }
-        taskCreatorInput.value = "";
-        taskCreatorInput.focus();
-    }
-    // deleteTask() {
-    //     this.newTaskDiv.remove();
-    // }
-};
+//     createTask() {
+//         console.log("test")
+//         if (/(\w+)/.test(this._task)) {
+//             const newTaskDiv = document.createElement("div");
+//             newTaskDiv.classList.add("task-child");
+//             newTaskDiv.style.display = "flex";
+//             taskCreated.prepend(newTaskDiv);
+//             newTaskDiv.innerHTML = `
+//             <div class="task-child__checkboks"><input type="checkbox"></div>
+//             <div class="task-child__created-task">${this._task}</div>
+//             <div class="task-child__delete-button"><input type="submit" value="x"></div>
+//             `;
+//             const idNumber = (taskCreated.querySelectorAll(".task-child").length);
+//             newTaskDiv.setAttribute("id",`task${idNumber}`);
+//         }
+//         taskCreatorInput.value = "";
+//         taskCreatorInput.focus();
+//     }
+//     // deleteTask() {
+//     //     this.newTaskDiv.remove();
+//     // }
+// };
 
 
-taskCreatorButton.addEventListener('click', function(e) {
-   new Task(taskCreatorInput.value).createTask();
-});
-taskCreatorInput.addEventListener('keyup', (e) => {
-    if (e.key === "Enter") new Task(taskCreatorInput.value).createTask();
-});
-
-// taskDeleteButton.addEventListener('click', function() {
-//     this.deleteTask();
+// taskCreatorButton.addEventListener('click', function(e) {
+//    new Task(taskCreatorInput.value).createTask();
+// });
+// taskCreatorInput.addEventListener('keyup', (e) => {
+//     if (e.key === "Enter") new Task(taskCreatorInput.value).createTask();
 // });
 
+// // taskDeleteButton.addEventListener('click', function() {
+// //     this.deleteTask();
+// // });
 
-test = 1; 
-document.querySelector('h1').setAttribute("id",`task${++test}`);
