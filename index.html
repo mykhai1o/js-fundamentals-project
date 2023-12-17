@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
     <title>To Do List</title>
 </head>
 <body>
-    <h1>To DO list</h1>
-    <div class="tasks-wrapper">
-        <div class="task-creator">
-            <!-- <input type="checkbox"> -->
-            <input class="task-creator__input" type="text" placeholder="Додайте завдання">
-            <!-- <textarea class="task-creator__input" name="" id="" cols="40" rows="2" placeholder="Додайте завдання"></textarea> -->
-            <input class="task-creator__button" type="submit" value="+">
+    <main class="wrapper">
+        <h1>To DO list</h1>
+        <div class="tasks-wrapper">
+            <div class="task-creator">
+                <!-- <input type="checkbox"> -->
+                <!-- <input class="task-creator__input" type="text" placeholder="Додайте завдання"> -->
+                <textarea class="task-creator__input" name="" id=""  placeholder="Додайте завдання"></textarea>
+                <input class="task-creator__button" type="submit" value="+">
+            </div>
+            <div class="task-created">
+            </div>
         </div>
-        <div class="task-created">
-    </div>
-    </div>
-
+    </main>
     <!-- Елементи, що будуть створюватись -->
     <!-- <div class="task-created">
         <div class="task-child" style="display: flex;">

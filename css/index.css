@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
+/* font-family: 'Montserrat', sans-serif; */
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+.wrapper {
+    padding: 20px;
+}
+h1 {
+    padding: 20px 0 10px;
+}
+.task-creator{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 5px;
+    max-width: 80%;
+}
+.task-creator__input{
+    border: 1px rgb(165, 165, 165) solid;
+    border-radius: 7px; 
+    padding: 5px; 
+    width: 90%;
+}
+.task-creator__input:focus {
+    outline: none;
+}
+/* .task-creator__input::placeholder {
+    padding: 0 1px;
+} */
+.task-creator__button {
+    width: 35px;
+    height: 35px;
+    border: 1px rgb(165, 165, 165) solid;
+    border-radius: 7px;
+}
+
+.task-created {
+    padding-top: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.task-child {
+    display:flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 5px;
+    
+}
+.task-child__delete-button {
+    margin-left: auto;
+}
+.task-child__delete-button input {
+    border-radius: 5px;
+    border: 1px rgb(165, 165, 165) solid;
+    width: 15px;
+    height: 15px;
+    font-size: 10px;
+    
+} 
+

@@ -24,11 +24,21 @@
 //     }
 // };
 
+
+
 const tasksContainer = document.querySelector('.tasks-wrapper');
 const taskCreated = document.querySelector('.task-created');
 const taskCreatorInput = document.querySelector('.task-creator__input');
 const taskCreatorButton = document.querySelector('.task-creator__button');
 // const taskDeleteButton = document.querySelector('.task-child__delete-button input');
+
+//Width of the created tasks
+let taskCreatorWidth = document.querySelector('.task-creator').scrollWidth;
+taskCreated.style.width = taskCreatorWidth - 40 + "px";
+window.addEventListener("resize", function() {
+    let taskCreatorWidth = document.querySelector('.task-creator').scrollWidth;
+    taskCreated.style.width = taskCreatorWidth - 40 + "px";
+});
 
 const createTask = function() {
     if (/(\S+)/.test(taskCreatorInput.value)) {
@@ -38,7 +48,7 @@ const createTask = function() {
         taskCreated.prepend(newTaskDiv);
         newTaskDiv.innerHTML = `
         <div class="task-child__checkboks"><input type="checkbox"></div>
-        <div class="task-child__created-task">${taskCreatorInput.value}</div>
+        <div class="task-child__created-task"><p>${taskCreatorInput.value}</p></div>
         <div class="task-child__delete-button"><input type="submit" value="x"></div>
             `;
             // const idNumber = (taskCreated.querySelectorAll(".task-child").length);
@@ -56,9 +66,13 @@ taskCreated.addEventListener('click', function(event) {
     const currentDelBut = event.target.closest('input[type="submit"]');
     if(!currentDelBut) return;
     event.target.closest(".task-child").remove();
-    
 });
-
+taskCreated.addEventListener('click', function(event) {
+    const currentTaskBody = event.target.closest('.task-child__created-task');
+    if(!currentTaskBody) return;
+    let taskValue = event.target.closest('p').value;
+    console.log("tasktest")
+});
 
 
 
