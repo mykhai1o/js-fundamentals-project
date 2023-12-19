@@ -4,6 +4,7 @@
     margin: 0;
     padding: 0;
     font-family: 'Montserrat', sans-serif;
+    color: rgb(62, 62, 62);
 }
 .wrapper {
     padding: 20px;
@@ -51,6 +52,9 @@ h1 {
     gap: 5px;
     
 }
+input[type="checkbox"] {
+   
+}
 .task-child__delete-button {
     margin-left: auto;
 }
@@ -59,7 +63,14 @@ h1 {
     border: 1px rgb(165, 165, 165) solid;
     width: 15px;
     height: 15px;
-    font-size: 10px;
-    
+    font-size: 10px;  
 } 
-
+/* Виконане завдання */
+.complited-task {
+    text-decoration: line-through;
+    text-decoration-thickness: 0.7px;
+    color: rgb(186, 186, 186);
+}
+input[type="checkbox"]:checked{
+    background-color: red; /* Задати фон позначеної галочки */
+}

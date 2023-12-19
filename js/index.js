@@ -1,28 +1,12 @@
-// - Створення елементів через клас
-// - Видалення завдань поштучно
+// ++-Створення елементів через клас
+// ++- Видалення завдань поштучно
 // - Очищення всього переліку завдань
 // - Виконанні завдання приховувати з можливість переглядати їх окремо
 // - зберігання завдань в кеші
 // - зберігання завдань в базі даних
 
 
-// class Task  {
-//     // constructor(title, discription, date, time) {
-//     //     this._title = title;
-//     //     this._discription = discription;
-//     //     this._date = date;
-//     //     this._time = time;
-//     // }
-//     constructor(title) {
-//         this._title = title;
-//     }
-//     get title() {
-//         this._title = title; 
-//     }
-//     set title(value) {
-//         this._title = value; 
-//     }
-// };
+
 
 
 
@@ -72,20 +56,48 @@ taskCreated.addEventListener('click', function(event) {
     const currentTaskBody = event.target.closest('.task-child__created-task');
     if(!currentTaskBody) return;
     let taskValue = event.target.closest('p').value;
-    console.log("tasktest")
+    // console.log("tasktest")
 });
 //Checkbox
 document.addEventListener("click", function(event) {
     const checkbox = event.target.closest('input[type="checkbox"]');
     if(!checkbox) return;
-    if(checkbox.hasAttribute("checked")) {
-        console.log( "test");
-    }
-
+    const currentTaskBody = checkbox.parentNode.nextElementSibling.children[0];
+    if(checkbox.checked) {
+        currentTaskBody.classList.toggle("complited-task");
+    } else {
+        currentTaskBody.classList.remove("complited-task");
+    }  
 })
 
 
+
+
+
+
+
+
 //_____________________________________________________
+//Class variation
+
+// class Task  {
+//     // constructor(title, discription, date, time) {
+//     //     this._title = title;
+//     //     this._discription = discription;
+//     //     this._date = date;
+//     //     this._time = time;
+//     // }
+//     constructor(title) {
+//         this._title = title;
+//     }
+//     get title() {
+//         this._title = title; 
+//     }
+//     set title(value) {
+//         this._title = value; 
+//     }
+// };
+
 
 // const taskCreatorInput = document.querySelector('.task-creator__input');
 // const taskCreatorButton = document.querySelector('.task-creator__button');
