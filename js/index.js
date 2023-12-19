@@ -30,7 +30,7 @@ const tasksContainer = document.querySelector('.tasks-wrapper');
 const taskCreated = document.querySelector('.task-created');
 const taskCreatorInput = document.querySelector('.task-creator__input');
 const taskCreatorButton = document.querySelector('.task-creator__button');
-// const taskDeleteButton = document.querySelector('.task-child__delete-button input');
+const taskCompleted = document.querySelector('.task-completed');
 
 //Width of the created tasks
 let taskCreatorWidth = document.querySelector('.task-creator').scrollWidth;
@@ -67,13 +67,22 @@ taskCreated.addEventListener('click', function(event) {
     if(!currentDelBut) return;
     event.target.closest(".task-child").remove();
 });
+//Редагування завдання
 taskCreated.addEventListener('click', function(event) {
     const currentTaskBody = event.target.closest('.task-child__created-task');
     if(!currentTaskBody) return;
     let taskValue = event.target.closest('p').value;
     console.log("tasktest")
 });
+//Checkbox
+document.addEventListener("click", function(event) {
+    const checkbox = event.target.closest('input[type="checkbox"]');
+    if(!checkbox) return;
+    if(checkbox.hasAttribute("checked")) {
+        console.log( "test");
+    }
 
+})
 
 
 //_____________________________________________________
