@@ -19,9 +19,11 @@ const taskCompleted = document.querySelector('.task-completed');
 //Width of the created tasks
 let taskCreatorWidth = document.querySelector('.task-creator').scrollWidth;
 taskCreated.style.width = taskCreatorWidth - 40 + "px";
+taskCompleted.style.width = taskCreatorWidth - 40 +"px";
 window.addEventListener("resize", function() {
     let taskCreatorWidth = document.querySelector('.task-creator').scrollWidth;
     taskCreated.style.width = taskCreatorWidth - 40 + "px";
+    taskCompleted.style.width = taskCreatorWidth - 40 +"px";
 });
 
 const createTask = function() {
@@ -64,10 +66,15 @@ document.addEventListener("click", function(event) {
     if(!checkbox) return;
     const currentTaskBody = checkbox.parentNode.nextElementSibling.children[0];
     if(checkbox.checked) {
+        const task = checkbox.parentNode.parentNode;
         currentTaskBody.classList.toggle("complited-task");
+        taskCompleted.children[0].after(task);
     } else {
         currentTaskBody.classList.remove("complited-task");
-    }  
+        const task = checkbox.parentNode.parentNode;
+        taskCreated.prepend(task);
+    }
+      
 })
 
 

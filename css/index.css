@@ -74,3 +74,20 @@ input[type="checkbox"] {
 input[type="checkbox"]:checked{
     background-color: red; /* Задати фон позначеної галочки */
 }
+.task-completed {
+    margin-top: 20px;
+}
+.task-completed h3 {
+    font-size: 7px;
+    text-align: center;
+}
+.task-completed div {
+    text-align: center;
+    margin-top: -2px;
+}
+.task-completed .line{
+    margin-top: -8px;
+    margin-bottom: 5px;
+    display: block;
+    border-top: 1px rgb(186, 186, 186) solid;
+}
