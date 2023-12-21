@@ -1,9 +1,9 @@
 // ++-Створення елементів через клас
 // ++- Видалення завдань поштучно
-// - Очищення всього переліку завдань
-// - Виконанні завдання приховувати з можливість переглядати їх окремо
+// ++- Виконанні завдання приховувати з можливість переглядати їх окремо
+// - Очищення всього переліку завдань??
 // - зберігання завдань в кеші
-// - зберігання завдань в базі даних
+// - Зміна завдання
 
 
 
@@ -15,6 +15,7 @@ const taskCreated = document.querySelector('.task-created');
 const taskCreatorInput = document.querySelector('.task-creator__input');
 const taskCreatorButton = document.querySelector('.task-creator__button');
 const taskCompleted = document.querySelector('.task-completed');
+const taskCompletedBody = document.querySelector('.task-completed-body');
 
 //Width of the created tasks
 let taskCreatorWidth = document.querySelector('.task-creator').scrollWidth;
@@ -43,40 +44,79 @@ const createTask = function() {
         taskCreatorInput.value = "";
         taskCreatorInput.focus();
 }
-    
+//Додавання завдання    
 taskCreatorButton.addEventListener('click', createTask);
 taskCreatorInput.addEventListener('keyup', (e) => {
     if (e.key === "Enter") createTask();
 });
+//Видалення завдання
 taskCreated.addEventListener('click', function(event) {
     const currentDelBut = event.target.closest('input[type="submit"]');
     if(!currentDelBut) return;
     event.target.closest(".task-child").remove();
 });
+taskCompleted.addEventListener('click', function(event) {
+    const currentDelBut = event.target.closest('input[type="submit"]');
+    if(!currentDelBut) return;
+    event.target.closest(".task-child").remove();
+    if(taskCompletedBody.querySelectorAll('.task-child').length === 0) {
+        taskCompleted.classList.remove("show"); 
+    }
+});
 //Редагування завдання
 taskCreated.addEventListener('click', function(event) {
     const currentTaskBody = event.target.closest('.task-child__created-task');
     if(!currentTaskBody) return;
-    let taskValue = event.target.closest('p').value;
+    const taskValue = event.target.closest('p');
+    const taskText = taskValue.textContent;
+    const taskTextContainer = taskValue.parentNode;
+    taskValue.remove();
+    taskTextContainer.innerHTML = `<input type="text" value="${taskText}">`
+    // document.addEventListener("click", function(event) {
+    //     // if(!event.target.closest("input[type='text']")) {
+    //     //     taskTextContainer.firstElementChild.remove();
+    //     //     taskTextContainer.innerHTML = `<p>${event.target.closest("input[type='text']").value}</p>`
+    //     // }
+    // })
+    // console.log(taskValue.parentNode)
     // console.log("tasktest")
 });
 //Checkbox
 document.addEventListener("click", function(event) {
     const checkbox = event.target.closest('input[type="checkbox"]');
     if(!checkbox) return;
+    const allCheckbox = document.querySelectorAll("input[type='checkbox']");
+    const checkedCheckbox = Array.from(allCheckbox).filter((item) => item.checked);
+    if(checkedCheckbox.length>=1 && !taskCompleted.classList.contains("show")) {
+        taskCompleted.classList.toggle("show");
+    } else if(checkedCheckbox.length === 0) {
+        taskCompleted.classList.remove("show"); 
+    }
+    //Переміщення завдань
     const currentTaskBody = checkbox.parentNode.nextElementSibling.children[0];
     if(checkbox.checked) {
         const task = checkbox.parentNode.parentNode;
         currentTaskBody.classList.toggle("complited-task");
-        taskCompleted.children[0].after(task);
+        taskCompletedBody.prepend(task);
     } else {
         currentTaskBody.classList.remove("complited-task");
         const task = checkbox.parentNode.parentNode;
         taskCreated.prepend(task);
     }
-      
 })
+//Приховати виконані завдання
+const hideButton = document.querySelector(".header-button");
+hideButton.addEventListener("click", function() {
+    if(!taskCompletedBody.classList.contains("hide")){
+        taskCompletedBody.classList.toggle("hide");
+        hideButton.firstElementChild.textContent = "Show";
+    } else if(taskCompletedBody.classList.contains("hide")){
+        taskCompletedBody.classList.remove("hide");
+        hideButton.firstElementChild.textContent = "Hide";
+    }
+});
 
+//_________________________________________________________________
 
 
 
