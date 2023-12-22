@@ -1,9 +1,10 @@
-// ++-Створення елементів через клас
-// ++- Видалення завдань поштучно
-// ++- Виконанні завдання приховувати з можливість переглядати їх окремо
+// ++ Створення елементів через клас
+// ++ Видалення завдань поштучно
+// ++ Виконанні завдання приховувати з можливість переглядати їх окремо
+// +- Зміна завдання (зробити захист від одночасного редагування кількох параграфів)
+// - Зберігання завдань в кеші
+// - Перетягнення завдань
 // - Очищення всього переліку завдань??
-// - зберігання завдань в кеші
-// - Зміна завдання
 
 
 
@@ -38,8 +39,8 @@ const createTask = function() {
         <div class="task-child__created-task"><p>${taskCreatorInput.value}</p></div>
         <div class="task-child__delete-button"><input type="submit" value="x"></div>
             `;
-            // const idNumber = (taskCreated.querySelectorAll(".task-child").length);
-            // newTaskDiv.setAttribute("id",`task${idNumber}`);
+        const idNumber = (taskCreated.querySelectorAll(".task-child").length);
+        newTaskDiv.setAttribute("id",`task${idNumber}`);
         }
         taskCreatorInput.value = "";
         taskCreatorInput.focus();
@@ -64,26 +65,52 @@ taskCompleted.addEventListener('click', function(event) {
     }
 });
 //Редагування завдання
-taskCreated.addEventListener('click', function(event) {
-    const currentTaskBody = event.target.closest('.task-child__created-task');
-    if(!currentTaskBody) return;
-    const taskValue = event.target.closest('p');
-    const taskText = taskValue.textContent;
-    const taskTextContainer = taskValue.parentNode;
-    taskValue.remove();
-    taskTextContainer.innerHTML = `<input type="text" value="${taskText}">`
-    // document.addEventListener("click", function(event) {
-    //     // if(!event.target.closest("input[type='text']")) {
-    //     //     taskTextContainer.firstElementChild.remove();
-    //     //     taskTextContainer.innerHTML = `<p>${event.target.closest("input[type='text']").value}</p>`
-    //     // }
-    // })
-    // console.log(taskValue.parentNode)
-    // console.log("tasktest")
+document.addEventListener('click', function(event) {
+    if(event.target.closest('p')) {
+        const currentTaskP = event.target.closest('p');
+        if(currentTaskP.parentNode.parentNode.parentNode === taskCreated) {
+            const currentTaskParentParentID = currentTaskP.parentNode.parentNode.getAttribute("id");
+            const findCurrentTask = taskCreated.querySelector(`#${currentTaskParentParentID}`);
+            const currentTaskWrapper = findCurrentTask.children[1];
+            const taskPValue = currentTaskWrapper.firstElementChild.textContent;
+            currentTaskWrapper.firstElementChild.remove();
+            currentTaskWrapper.innerHTML = `<input type="text" value="${taskPValue}">`;
+            currentTaskWrapper.firstElementChild.focus();
+        }
+        // const currentTaskPText = currentTaskP.textContent;
+        // currentTaskP.remove();
+        // currentTaskPParent.innerHTML = `<input type="text" value="${currentTaskPText}">`;
+        // const taskValue = document.querySelector('.task-created p');
+        // const taskText = taskValue.textContent;
+        // const taskTextContainer = taskValue.parentNode;
+        // taskValue.remove();
+        // taskTextContainer.innerHTML = `<input type="text" value="${taskText}">`;
+    } else if(!event.target.matches('input')) {
+        const taskTextInInput = document.querySelector('.task-created input[type="text"]');
+        if(taskTextInInput) {
+            const inputText = taskTextInInput.value;
+            const inputContainer = taskTextInInput.parentNode;
+            taskTextInInput.remove();
+            inputContainer.innerHTML = `<p>${inputText}</p>`;
+        }
+    }
 });
+document.addEventListener('keyup', (e) => {
+    if (e.key === "Enter") {
+        const inputTask = taskCreated.querySelector('input[type="text"]');
+        if(inputTask) {
+            const inputTaskValue = inputTask.value;
+            const inputContainer = inputTask.parentNode;
+            inputTask.remove();
+            inputContainer.innerHTML = `<p>${inputTaskValue}</p>`;
+        }
+    } 
+});
+
+
 //Checkbox
 document.addEventListener("click", function(event) {
-    const checkbox = event.target.closest('input[type="checkbox"]');
+        const checkbox = event.target.closest('input[type="checkbox"]');
     if(!checkbox) return;
     const allCheckbox = document.querySelectorAll("input[type='checkbox']");
     const checkedCheckbox = Array.from(allCheckbox).filter((item) => item.checked);
@@ -95,6 +122,13 @@ document.addEventListener("click", function(event) {
     //Переміщення завдань
     const currentTaskBody = checkbox.parentNode.nextElementSibling.children[0];
     if(checkbox.checked) {
+        if(currentTaskBody.matches('input[type="text"]')) {
+            const inputTaskValue = currentTaskBody.value;
+            const inputContainer = currentTaskBody.parentNode;
+            currentTaskBody.remove();
+            inputContainer.innerHTML = `<p class="complited-task">${inputTaskValue}</p>`;
+        }
+        console.log(currentTaskBody.matches('input[type="text"]'));
         const task = checkbox.parentNode.parentNode;
         currentTaskBody.classList.toggle("complited-task");
         taskCompletedBody.prepend(task);
@@ -104,6 +138,7 @@ document.addEventListener("click", function(event) {
         taskCreated.prepend(task);
     }
 })
+
 //Приховати виконані завдання
 const hideButton = document.querySelector(".header-button");
 hideButton.addEventListener("click", function() {
