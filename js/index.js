@@ -18,6 +18,49 @@ const taskCreatorButton = document.querySelector('.task-creator__button');
 const taskCompleted = document.querySelector('.task-completed');
 const taskCompletedBody = document.querySelector('.task-completed-body');
 
+//Localstorage
+// let tasks = [
+    //     // {"id": "task0",
+    //     //  "task": "Testing task",
+    //     //  "checked": "false"  
+    //     // }
+    // ];
+    
+    // sessionStorage.setItem("tasks", JSON.stringify(tasks));
+    
+    // function saveToLocal(id, taskValue, checked) {
+        //     let result = {
+            //         "id": `task${id}`,
+            //         "task": `${taskValue}`,
+            //         "checked": `${checked}`,
+            //     }
+            //     tasks.push(result);
+            //     sessionStorage.setItem("tasks", JSON.stringify(tasks));
+            // }
+            //_______________________________________________________--------____
+let tasks = [];
+function saveToLocal(id, taskValue, checked) {
+    const createdTasks =  tasksContainer.querySelectorAll('.task-child');
+    let allTasks = [];
+    for(let i = 0; i < createdTasks.length; i++){
+        const taskId = createdTasks[i].getAttribute("id");
+        const taskText = createdTasks[i].children[1].firstElementChild.textContent;
+        const checkedValue = createdTasks[i].firstElementChild.firstElementChild.checked;
+        let result = {
+            "id": `${taskId}`,
+            "task": `${taskText}`,
+            "checked": `${checkedValue}`,
+        }
+        allTasks.push(result);
+        
+    }
+    localStorage.setItem("tasks", JSON.stringify(allTasks))
+    console.log(localStorage.getItem("tasks"));
+   
+}
+// saveToLocal()
+
+
 //Width of the created tasks
 let taskCreatorWidth = document.querySelector('.task-creator').scrollWidth;
 taskCreated.style.width = taskCreatorWidth + "px";
@@ -27,6 +70,7 @@ window.addEventListener("resize", function() {
     taskCreated.style.width = taskCreatorWidth + "px";
     taskCompleted.style.width = taskCreatorWidth +"px";
 });
+
 
 const createTask = function() {
     if (/(\S+)/.test(taskCreatorInput.value)) {
@@ -38,10 +82,12 @@ const createTask = function() {
         <div class="task-child__checkboks"><input type="checkbox"></div>
         <div class="task-child__created-task"><p>${taskCreatorInput.value}</p></div>
         <div class="task-child__delete-button"><input type="submit" value="x"></div>
-            `;
+        `;
         const idNumber = (taskCreated.querySelectorAll(".task-child").length);
         newTaskDiv.setAttribute("id",`task${idNumber}`);
+        saveToLocal(idNumber, taskCreatorInput.value, false);
         }
+
         taskCreatorInput.value = "";
         taskCreatorInput.focus();
 }
@@ -74,6 +120,10 @@ document.addEventListener('click', function(event) {
         if(inputTaskExisted){
             const inputText = inputTaskExisted.value;
             const inputContainer = inputTaskExisted.parentNode;
+            if(inputText === ""){
+                const taskChildCreated = inputContainer.parentNode;
+                taskChildCreated.remove();
+            }
             inputTaskExisted.remove();
             inputContainer.innerHTML = `<p>${inputText}</p>`;
         }
@@ -103,6 +153,10 @@ document.addEventListener('keyup', (e) => {
         if(inputTask) {
             const inputTaskValue = inputTask.value;
             const inputContainer = inputTask.parentNode;
+            if(inputTaskValue === ""){
+                const taskChildCreated = inputContainer.parentNode;
+                taskChildCreated.remove();
+            }
             inputTask.remove();
             inputContainer.innerHTML = `<p>${inputTaskValue}</p>`;
         }
@@ -130,7 +184,6 @@ document.addEventListener("click", function(event) {
             currentTaskBody.remove();
             inputContainer.innerHTML = `<p class="complited-task">${inputTaskValue}</p>`;
         }
-        console.log(currentTaskBody.matches('input[type="text"]'));
         const task = checkbox.parentNode.parentNode;
         currentTaskBody.classList.toggle("complited-task");
         taskCompletedBody.prepend(task);
@@ -154,7 +207,6 @@ hideButton.addEventListener("click", function() {
 });
 
 //_________________________________________________________________
-
 
 
 
