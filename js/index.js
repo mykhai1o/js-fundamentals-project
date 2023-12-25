@@ -20,12 +20,12 @@ const taskCompletedBody = document.querySelector('.task-completed-body');
 
 //Width of the created tasks
 let taskCreatorWidth = document.querySelector('.task-creator').scrollWidth;
-taskCreated.style.width = taskCreatorWidth - 40 + "px";
-taskCompleted.style.width = taskCreatorWidth - 40 +"px";
+taskCreated.style.width = taskCreatorWidth + "px";
+taskCompleted.style.width = taskCreatorWidth +"px";
 window.addEventListener("resize", function() {
     let taskCreatorWidth = document.querySelector('.task-creator').scrollWidth;
-    taskCreated.style.width = taskCreatorWidth - 40 + "px";
-    taskCompleted.style.width = taskCreatorWidth - 40 +"px";
+    taskCreated.style.width = taskCreatorWidth + "px";
+    taskCompleted.style.width = taskCreatorWidth +"px";
 });
 
 const createTask = function() {
@@ -50,6 +50,7 @@ taskCreatorButton.addEventListener('click', createTask);
 taskCreatorInput.addEventListener('keyup', (e) => {
     if (e.key === "Enter") createTask();
 });
+
 //Видалення завдання
 taskCreated.addEventListener('click', function(event) {
     const currentDelBut = event.target.closest('input[type="submit"]');
@@ -64,10 +65,18 @@ taskCompleted.addEventListener('click', function(event) {
         taskCompleted.classList.remove("show"); 
     }
 });
+
 //Редагування завдання
 document.addEventListener('click', function(event) {
     if(event.target.closest('p')) {
         const currentTaskP = event.target.closest('p');
+        const inputTaskExisted = taskCreated.querySelector('input[type="text"');
+        if(inputTaskExisted){
+            const inputText = inputTaskExisted.value;
+            const inputContainer = inputTaskExisted.parentNode;
+            inputTaskExisted.remove();
+            inputContainer.innerHTML = `<p>${inputText}</p>`;
+        }
         if(currentTaskP.parentNode.parentNode.parentNode === taskCreated) {
             const currentTaskParentParentID = currentTaskP.parentNode.parentNode.getAttribute("id");
             const findCurrentTask = taskCreated.querySelector(`#${currentTaskParentParentID}`);
@@ -77,14 +86,7 @@ document.addEventListener('click', function(event) {
             currentTaskWrapper.innerHTML = `<input type="text" value="${taskPValue}">`;
             currentTaskWrapper.firstElementChild.focus();
         }
-        // const currentTaskPText = currentTaskP.textContent;
-        // currentTaskP.remove();
-        // currentTaskPParent.innerHTML = `<input type="text" value="${currentTaskPText}">`;
-        // const taskValue = document.querySelector('.task-created p');
-        // const taskText = taskValue.textContent;
-        // const taskTextContainer = taskValue.parentNode;
-        // taskValue.remove();
-        // taskTextContainer.innerHTML = `<input type="text" value="${taskText}">`;
+        
     } else if(!event.target.matches('input')) {
         const taskTextInInput = document.querySelector('.task-created input[type="text"]');
         if(taskTextInInput) {
