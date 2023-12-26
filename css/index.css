@@ -25,7 +25,7 @@ h1 {
 }
 .task-creator__input{
     border: 1px rgb(165, 165, 165) solid;
-    border-radius: 7px; 
+    border-radius: 10px; 
     padding: 5px 10px; 
     width: 90%;
     font-size: 20px;
@@ -37,10 +37,10 @@ h1 {
     padding: 0 1px;
 } */
 .task-creator__button {
-    width: 68px;
-    height: 68px;
+    width: 65px;
+    height: 65px;
     border: 1px rgb(165, 165, 165) solid;
-    border-radius: 15px;
+    border-radius: 14px;
     font-size: 32px;
     cursor: pointer;
 }
@@ -123,6 +123,7 @@ input[type="text"]{
 .clear-button {
     display: flex;
     justify-content: center;
+    margin-top: 10px;
 }
 .clear-button.hide {
     display: none;

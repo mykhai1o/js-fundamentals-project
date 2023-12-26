@@ -138,7 +138,7 @@ taskCreated.addEventListener('click', function(event) {
     event.target.closest(".task-child").remove();
     saveToLocal();
 });
-taskCompleted.addEventListener('click', function(event) {
+taskCompletedBody.addEventListener('click', function(event) {
     const currentDelBut = event.target.closest('input[type="submit"]');
     if(!currentDelBut) return;
     event.target.closest(".task-child").remove();
@@ -255,14 +255,18 @@ hideButton.addEventListener("click", function() {
 });
 
 // Очистити виконані завдання
-// const clearButton = document.querySelector('.clear-button');
-// clearButton.addEventListener("click", function(){
-//     console.log(taskCompletedBody[0]);
-//     for(let i = 0; i < taskCompletedBody.length; i++) {
-//     }
-        
-// });
+const clearButton = document.querySelector('.clear-button');
+clearButton.addEventListener("click", function(e){
+    // console.log(e.target);
+    taskCompletedBody.innerHTML = "";
+    saveToLocal();
+    const allCheckbox = document.querySelectorAll("input[type='checkbox']");
+    const checkedCheckbox = Array.from(allCheckbox).filter((item) => item.checked);
+    if(checkedCheckbox.length>=1 && !taskCompleted.classList.contains("show")) {
+        taskCompleted.classList.toggle("show");
+    } else if(checkedCheckbox.length === 0) {
+        taskCompleted.classList.remove("show"); 
+    }
+});
 
-//_________________________________________________________________
-
-
+//
