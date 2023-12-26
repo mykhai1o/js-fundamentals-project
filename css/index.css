@@ -26,9 +26,9 @@ h1 {
 .task-creator__input{
     border: 1px rgb(165, 165, 165) solid;
     border-radius: 7px; 
-    padding: 5px; 
+    padding: 5px 10px; 
     width: 90%;
-    font-size: 22px;
+    font-size: 20px;
 }
 .task-creator__input:focus, input[type="text"]:focus {
     outline: none;
@@ -98,7 +98,7 @@ input[type="text"]{
     height: 15px;
 }
 .task-completed h3:hover {
-    font-size: 19px;
+    font-size: 17px;
 }
 .task-completed .arrow {
     cursor: pointer;
@@ -119,4 +119,20 @@ input[type="text"]{
 }
 .hide {
     display: none;
+}
+.clear-button {
+    display: flex;
+    justify-content: center;
+}
+.clear-button.hide {
+    display: none;
+}
+.clear-button input{
+    padding: 1px 5px;
+    border: 1px rgb(165, 165, 165) solid;
+    border-radius: 5px;
+    font-size: 12px;
+    color: rgb(36, 36, 36);
+    cursor: pointer;
+    background-color: rgb(245, 244, 244);
 }

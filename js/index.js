@@ -43,7 +43,7 @@ function saveToLocal(id, taskValue, checked) {
 
 function getFromLocal() {
     const infoFromLocal = JSON.parse(localStorage.getItem("tasks"));
-    console.log(infoFromLocal);
+    // console.log(infoFromLocal);
     if(infoFromLocal) {
         // console.log(infoFromLocal);
         // console.log(infoFromLocal.length);
@@ -68,7 +68,7 @@ function getFromLocal() {
             const checkbox = newTaskDiv.firstElementChild.firstElementChild;
             const currentTaskBody = newTaskDiv.children[1].firstElementChild;
             if(checkbox.checked) {
-                console.log(currentTaskBody);
+                // console.log(currentTaskBody);
                 currentTaskBody.classList.toggle("complited-task");
                 // const taskCompletedBody = document.querySelector(".task-completed-body");
                 taskCompletedBody.append(newTaskDiv);
@@ -242,12 +242,26 @@ const hideButton = document.querySelector(".header-button");
 hideButton.addEventListener("click", function() {
     if(!taskCompletedBody.classList.contains("hide")){
         taskCompletedBody.classList.toggle("hide");
+        const clearButton = document.querySelector('.clear-button');
+        clearButton.classList.toggle("hide");
+        console.log(clearButton);
         hideButton.firstElementChild.textContent = "Show";
     } else if(taskCompletedBody.classList.contains("hide")){
         taskCompletedBody.classList.remove("hide");
+        const clearButton = document.querySelector('.clear-button');
+        clearButton.classList.remove("hide");
         hideButton.firstElementChild.textContent = "Hide";
     }
 });
+
+// Очистити виконані завдання
+// const clearButton = document.querySelector('.clear-button');
+// clearButton.addEventListener("click", function(){
+//     console.log(taskCompletedBody[0]);
+//     for(let i = 0; i < taskCompletedBody.length; i++) {
+//     }
+        
+// });
 
 //_________________________________________________________________
 
