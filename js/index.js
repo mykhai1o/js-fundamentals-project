@@ -19,25 +19,6 @@ const taskCompleted = document.querySelector('.task-completed');
 const taskCompletedBody = document.querySelector('.task-completed-body');
 
 //Localstorage
-// let tasks = [
-    //     // {"id": "task0",
-    //     //  "task": "Testing task",
-    //     //  "checked": "false"  
-    //     // }
-    // ];
-    
-    // sessionStorage.setItem("tasks", JSON.stringify(tasks));
-    
-    // function saveToLocal(id, taskValue, checked) {
-        //     let result = {
-            //         "id": `task${id}`,
-            //         "task": `${taskValue}`,
-            //         "checked": `${checked}`,
-            //     }
-            //     tasks.push(result);
-            //     sessionStorage.setItem("tasks", JSON.stringify(tasks));
-            // }
-            //_______________________________________________________--------____
 let tasks = [];
 function saveToLocal(id, taskValue, checked) {
     const createdTasks =  tasksContainer.querySelectorAll('.task-child');
@@ -45,20 +26,69 @@ function saveToLocal(id, taskValue, checked) {
     for(let i = 0; i < createdTasks.length; i++){
         const taskId = createdTasks[i].getAttribute("id");
         const taskText = createdTasks[i].children[1].firstElementChild.textContent;
+        const taskTextWithoutN = taskText.replaceAll("\n", "");
         const checkedValue = createdTasks[i].firstElementChild.firstElementChild.checked;
         let result = {
             "id": `${taskId}`,
-            "task": `${taskText}`,
+            "task": `${taskTextWithoutN}`,
             "checked": `${checkedValue}`,
         }
         allTasks.push(result);
         
     }
     localStorage.setItem("tasks", JSON.stringify(allTasks))
-    console.log(localStorage.getItem("tasks"));
-   
+    // console.log(localStorage.getItem("tasks"));
+    
 }
-// saveToLocal()
+
+function getFromLocal() {
+    const infoFromLocal = JSON.parse(localStorage.getItem("tasks"));
+    console.log(infoFromLocal);
+    if(infoFromLocal) {
+        // console.log(infoFromLocal);
+        // console.log(infoFromLocal.length);
+        for(let i = 0; i < infoFromLocal.length; i++) {
+            const taskId = infoFromLocal[i].id;
+            const taskText = infoFromLocal[i].task;
+            const taskChecked = Boolean((infoFromLocal[i].checked === "false") ? false : true);
+            // console.log(taskChecked);
+            //Створення завдань з localstorage
+            const newTaskDiv = document.createElement("div");
+            newTaskDiv.classList.add("task-child");
+            // newTaskDiv.style.display = "flex";
+            taskCreated.append(newTaskDiv);
+            newTaskDiv.innerHTML = `
+            <div class="task-child__checkboks"><input type="checkbox" ${(taskChecked) ? "checked" : ""}></div>
+            <div class="task-child__created-task"><p>${taskText}</p></div>
+            <div class="task-child__delete-button"><input type="submit" value="x"></div>
+            `;
+            newTaskDiv.setAttribute("id",`${taskId}`);
+
+            //Переміщення у виконані
+            const checkbox = newTaskDiv.firstElementChild.firstElementChild;
+            const currentTaskBody = newTaskDiv.children[1].firstElementChild;
+            if(checkbox.checked) {
+                console.log(currentTaskBody);
+                currentTaskBody.classList.toggle("complited-task");
+                // const taskCompletedBody = document.querySelector(".task-completed-body");
+                taskCompletedBody.append(newTaskDiv);
+            }   
+            
+            //Відображення виконаних завдань
+            const allCheckbox = document.querySelectorAll("input[type='checkbox']");
+            const checkedCheckbox = Array.from(allCheckbox).filter((item) => item.checked);
+            if(checkedCheckbox.length>=1 && !taskCompleted.classList.contains("show")) {
+                taskCompleted.classList.toggle("show");
+            } else if(checkedCheckbox.length === 0) {
+                taskCompleted.classList.remove("show"); 
+            }
+        }
+    }
+
+};
+
+getFromLocal();
+
 
 
 //Width of the created tasks
@@ -76,7 +106,7 @@ const createTask = function() {
     if (/(\S+)/.test(taskCreatorInput.value)) {
         const newTaskDiv = document.createElement("div");
         newTaskDiv.classList.add("task-child");
-        newTaskDiv.style.display = "flex";
+        // newTaskDiv.style.display = "flex";
         taskCreated.prepend(newTaskDiv);
         newTaskDiv.innerHTML = `
         <div class="task-child__checkboks"><input type="checkbox"></div>
@@ -85,7 +115,7 @@ const createTask = function() {
         `;
         const idNumber = (taskCreated.querySelectorAll(".task-child").length);
         newTaskDiv.setAttribute("id",`task${idNumber}`);
-        saveToLocal(idNumber, taskCreatorInput.value, false);
+        saveToLocal();
         }
 
         taskCreatorInput.value = "";
@@ -94,7 +124,11 @@ const createTask = function() {
 //Додавання завдання    
 taskCreatorButton.addEventListener('click', createTask);
 taskCreatorInput.addEventListener('keyup', (e) => {
-    if (e.key === "Enter") createTask();
+    if (e.key === "Enter") {
+        createTask();
+        e.preventDefault();
+        e.stopPropagation();
+    }
 });
 
 //Видалення завдання
@@ -102,13 +136,16 @@ taskCreated.addEventListener('click', function(event) {
     const currentDelBut = event.target.closest('input[type="submit"]');
     if(!currentDelBut) return;
     event.target.closest(".task-child").remove();
+    saveToLocal();
 });
 taskCompleted.addEventListener('click', function(event) {
     const currentDelBut = event.target.closest('input[type="submit"]');
     if(!currentDelBut) return;
     event.target.closest(".task-child").remove();
+    saveToLocal();
     if(taskCompletedBody.querySelectorAll('.task-child').length === 0) {
         taskCompleted.classList.remove("show"); 
+        saveToLocal();
     }
 });
 
@@ -126,6 +163,7 @@ document.addEventListener('click', function(event) {
             }
             inputTaskExisted.remove();
             inputContainer.innerHTML = `<p>${inputText}</p>`;
+            saveToLocal();
         }
         if(currentTaskP.parentNode.parentNode.parentNode === taskCreated) {
             const currentTaskParentParentID = currentTaskP.parentNode.parentNode.getAttribute("id");
@@ -135,6 +173,7 @@ document.addEventListener('click', function(event) {
             currentTaskWrapper.firstElementChild.remove();
             currentTaskWrapper.innerHTML = `<input type="text" value="${taskPValue}">`;
             currentTaskWrapper.firstElementChild.focus();
+            saveToLocal();
         }
         
     } else if(!event.target.matches('input')) {
@@ -144,6 +183,7 @@ document.addEventListener('click', function(event) {
             const inputContainer = taskTextInInput.parentNode;
             taskTextInInput.remove();
             inputContainer.innerHTML = `<p>${inputText}</p>`;
+            saveToLocal();
         }
     }
 });
@@ -159,6 +199,7 @@ document.addEventListener('keyup', (e) => {
             }
             inputTask.remove();
             inputContainer.innerHTML = `<p>${inputTaskValue}</p>`;
+            saveToLocal();
         }
     } 
 });
@@ -187,10 +228,12 @@ document.addEventListener("click", function(event) {
         const task = checkbox.parentNode.parentNode;
         currentTaskBody.classList.toggle("complited-task");
         taskCompletedBody.prepend(task);
+        saveToLocal();
     } else {
         currentTaskBody.classList.remove("complited-task");
         const task = checkbox.parentNode.parentNode;
         taskCreated.prepend(task);
+        saveToLocal();
     }
 })
 
@@ -208,77 +251,4 @@ hideButton.addEventListener("click", function() {
 
 //_________________________________________________________________
 
-
-
-
-
-
-//_____________________________________________________
-//Class variation
-
-// class Task  {
-//     // constructor(title, discription, date, time) {
-//     //     this._title = title;
-//     //     this._discription = discription;
-//     //     this._date = date;
-//     //     this._time = time;
-//     // }
-//     constructor(title) {
-//         this._title = title;
-//     }
-//     get title() {
-//         this._title = title; 
-//     }
-//     set title(value) {
-//         this._title = value; 
-//     }
-// };
-
-
-// const taskCreatorInput = document.querySelector('.task-creator__input');
-// const taskCreatorButton = document.querySelector('.task-creator__button');
-// const tasksContainer = document.querySelector('.tasks-wrapper');
-// const taskCreated = document.querySelector('.task-created');
-// const taskDeleteButton = document.querySelector('.task-child__delete-button');
-
-
-// class Task  {
-//     constructor(task) {
-//         this._task = task;
-//     }
-    
-//     createTask() {
-//         console.log("test")
-//         if (/(\w+)/.test(this._task)) {
-//             const newTaskDiv = document.createElement("div");
-//             newTaskDiv.classList.add("task-child");
-//             newTaskDiv.style.display = "flex";
-//             taskCreated.prepend(newTaskDiv);
-//             newTaskDiv.innerHTML = `
-//             <div class="task-child__checkboks"><input type="checkbox"></div>
-//             <div class="task-child__created-task">${this._task}</div>
-//             <div class="task-child__delete-button"><input type="submit" value="x"></div>
-//             `;
-//             const idNumber = (taskCreated.querySelectorAll(".task-child").length);
-//             newTaskDiv.setAttribute("id",`task${idNumber}`);
-//         }
-//         taskCreatorInput.value = "";
-//         taskCreatorInput.focus();
-//     }
-//     // deleteTask() {
-//     //     this.newTaskDiv.remove();
-//     // }
-// };
-
-
-// taskCreatorButton.addEventListener('click', function(e) {
-//    new Task(taskCreatorInput.value).createTask();
-// });
-// taskCreatorInput.addEventListener('keyup', (e) => {
-//     if (e.key === "Enter") new Task(taskCreatorInput.value).createTask();
-// });
-
-// // taskDeleteButton.addEventListener('click', function() {
-// //     this.deleteTask();
-// // });
 
